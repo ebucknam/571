@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<div id="crime-rel-chart"></div>
+
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<style type="text/css">
+
+  rect:hover {
+    fill: orange;
+  }
+
+</style>
+
+<script>
+
+
+var margin = {top: 20, right: 30, bottom: 40, left: 250},
+    width = 700 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+var svg = d3.select("#crime-rel-chart")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+//https://raw.githubusercontent.com/ebucknam/571/main/people.csv
+//original: https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv
+//https://raw.githubusercontent.com/ebucknam/571/main/country.csv
+d3.csv("https://raw.githubusercontent.com/ebucknam/571/main/people.csv", function(data) {
+
+  //x axis
+  var x = d3.scaleLinear()
+    .domain([0, 13000])
+    .range([ 0, width]);
+
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
+  //y axis
+  var y = d3.scaleBand()
+    .range([ 0, height ])
+    .domain(data.map(function(d) { return d.relationship; }))
+    .padding(.1);
+
+  svg.append("g")
+    .call(d3.axisLeft(y))
+
+  svg.selectAll("bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x", x(0) )
+    .attr("y", function(d) { return y(d.relationship); })
+    .attr("width", function(d) { return x(d.vCount); })
+    .attr("height", y.bandwidth() )
+    .attr("fill", "#DA2629")
+    .append("title")
+    .text(function(d){return d.vCount})
+
+
+    // .attr("x", function(d) { return x(d.Country); })
+    // .attr("y", function(d) { return y(d.Value); })
+    // .attr("width", x.bandwidth())
+    // .attr("height", function(d) { return height - y(d.Value); })
+    // .attr("fill", "#69b3a2")
+
+})
+
+</script>
