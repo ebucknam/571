@@ -29,9 +29,7 @@ var svg = d3.select("#crime-rel-chart")
           "translate(" + margin.left + "," + margin.top + ")");
 
 //https://raw.githubusercontent.com/ebucknam/571/main/people.csv
-//original: https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv
-//https://raw.githubusercontent.com/ebucknam/571/main/country.csv
-d3.csv("https://raw.githubusercontent.com/ebucknam/571/main/people.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/ebucknam/571/main/victimCountByRel.csv", function(data) {
 
   //x axis
   var x = d3.scaleLinear()
@@ -66,12 +64,6 @@ d3.csv("https://raw.githubusercontent.com/ebucknam/571/main/people.csv", functio
     .append("title")
     .text(function(d){return d.vCount})
 
-
-    // .attr("x", function(d) { return x(d.Country); })
-    // .attr("y", function(d) { return y(d.Value); })
-    // .attr("width", x.bandwidth())
-    // .attr("height", function(d) { return height - y(d.Value); })
-    // .attr("fill", "#69b3a2")
 
 })
 
